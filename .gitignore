@@ -1,0 +1,27 @@
+# Compiled executables
+logistics_app
+*.exe
+*.out
+*.app
+
+# Object files
+*.o
+*.obj
+
+# Compiled dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Temporary files
+*.tmp
+*.swp
+*.swo
+*~
+
+# IDE files
+.vscode/
+.idea/
+*.suo
+*.user
+*.txt

@@ -1,6 +1,7 @@
 #include "FreightMenuHandler.h"
 #include "functions.h"
 #include "freight.h"
+#include "AutoRebalancer.h"
 #include <iostream>
 #include <limits>
 #include <string>
@@ -47,8 +48,22 @@ static freight::FreightType askFreightType()
     }
 }
 
-FreightMenuHandler::FreightMenuHandler(freightlist& fList)
-    : freightList(fList) {}
+FreightMenuHandler::FreightMenuHandler(freightlist& fList, CargoList& cList)
+    : freightList(fList), cargoList(cList), autoRebalancer(nullptr) 
+{
+    // Create and register the auto-rebalancer as an observer
+    autoRebalancer = new AutoRebalancer(freightList, cargoList);
+    freightList.addObserver(autoRebalancer);
+}
+
+FreightMenuHandler::~FreightMenuHandler()
+{
+    if (autoRebalancer)
+    {
+        freightList.removeObserver(autoRebalancer);
+        delete autoRebalancer;
+    }
+}
 
 void FreightMenuHandler::printMenu() 
 {
@@ -57,6 +72,7 @@ void FreightMenuHandler::printMenu()
               << " 2) Save freight to file\n"
               << " 3) Add freight\n"
               << " 4) List all freight\n"
+              << " 5) Delete freight with automatic rebalancing\n"
               << " 0) Return to main menu\n"
               << "Choice: ";
 }
@@ -147,6 +163,126 @@ void FreightMenuHandler::run()
             break;
         }
 
+        case 5:
+        {
+            // Delete freight with automatic rebalancing
+            int id = promptInt("Enter freight ID to delete: ");
+            
+            auto freight = freightList.findById(id);
+            if (!freight)
+            {
+                cout << "Freight F" << id << " not found.\n";
+                break;
+            }
+            
+            cout << "\n=== Delete Freight with Auto-Rebalancing ===\n";
+            cout << "Deleting: F" << freight->getIndex() 
+                 << " (" << freight->getTypeName() << ") "
+                 << "Destination: " << freight->getDestination()
+                 << " Time: " << formatTime12h(freight->getTime()) << "\n";
+            
+            if (currentGrouping.empty())
+            {
+                cout << "\nWARNING: No active schedule found. Freight will be deleted without rebalancing.\n";
+                cout << "Create a schedule first in the Scheduler Menu for automatic rebalancing.\n";
+                cout << "Proceed with deletion? (1=Yes, 0=No): ";
+                int confirm;
+                cin >> confirm;
+                clearInput();
+                
+                if (confirm == 1)
+                {
+                    if (freightList.remove(id))
+                    {
+                        cout << "Freight F" << id << " deleted.\n";
+                    }
+                    else
+                    {
+                        cout << "Failed to delete freight.\n";
+                    }
+                }
+                break;
+            }
+            
+            // Find orphaned cargo before removal
+            vector<int> orphanedCargo = autoRebalancer->findOrphanedCargo(id, currentGrouping);
+            
+            if (orphanedCargo.empty())
+            {
+                cout << "\nNo cargo assigned to this freight.\n";
+                cout << "Proceed with deletion? (1=Yes, 0=No): ";
+                int confirm;
+                cin >> confirm;
+                clearInput();
+                
+                if (confirm == 1)
+                {
+                    if (freightList.remove(id))
+                    {
+                        cout << "Freight F" << id << " deleted.\n";
+                        // Remove from grouping
+                        currentGrouping.erase(id);
+                    }
+                    else
+                    {
+                        cout << "Failed to delete freight.\n";
+                    }
+                }
+                break;
+            }
+            
+            // Show affected cargo
+            cout << "\nAffected cargo (" << orphanedCargo.size() << " items):\n";
+            for (int cargoId : orphanedCargo)
+            {
+                auto c = cargoList.findById(cargoId);
+                if (c)
+                {
+                    cout << "  C" << cargoId << " - Dest: " << c->getDestination()
+                         << ", Time: " << formatTime12h(c->getTime())
+                         << ", Capacity: " << c->getCapacity() << "\n";
+                }
+            }
+            
+            cout << "\nProceed with deletion and automatic rebalancing? (1=Yes, 0=No): ";
+            int confirm;
+            cin >> confirm;
+            clearInput();
+            
+            if (confirm != 1)
+            {
+                cout << "Deletion cancelled.\n";
+                break;
+            }
+            
+            // Store backup before changes
+            auto oldGrouping = currentGrouping;
+            
+            // Remove freight from grouping first
+            currentGrouping.erase(id);
+            
+            // Perform rebalancing
+            auto newGrouping = autoRebalancer->rebalanceCargo(orphanedCargo, currentGrouping);
+            
+            // Update current grouping
+            currentGrouping = newGrouping;
+            
+            // Remove the freight
+            if (freightList.remove(id))
+            {
+                cout << "\nFreight F" << id << " deleted successfully.\n";
+                
+                // Show rebalancing results
+                autoRebalancer->showRebalancingResults(orphanedCargo, oldGrouping, newGrouping);
+            }
+            else
+            {
+                cout << "Failed to delete freight.\n";
+            }
+            
+            break;
+        }
+
         case 0:
             return; // return to main menu
 
@@ -155,4 +291,9 @@ void FreightMenuHandler::run()
             break;
         }
     }
+}
+
+void FreightMenuHandler::setCurrentGrouping(const unordered_map<int, vector<int>>& grouping)
+{
+    currentGrouping = grouping;
 }

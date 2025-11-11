@@ -13,12 +13,15 @@ static bool file_exists(const  string& path)
 
 MenuManager::MenuManager()
     : state(MENU_SCHEDULER),
-      freightMenuHandler(freightList),
+      freightMenuHandler(freightList, cargoList),
       cargoMenuHandler(cargoList),
       schedulerMenuHandler(freightList, cargoList, scheduler)
 {
     using std::cout;                                    // will not work without std:: even thought used namespace std at the top
     using std::endl;
+    
+    // Connect FreightMenuHandler to SchedulerMenuHandler for grouping sync
+    schedulerMenuHandler.setFreightMenuHandler(&freightMenuHandler);
 
     cout << "Preloading freight.txt and cargo.txt..." << endl << endl;
 

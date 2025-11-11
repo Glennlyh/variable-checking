@@ -6,9 +6,13 @@
 #include <ostream>
 #include "freight.h"
 
+// Forward declaration
+class FreightObserver;
+
 class freightlist
 {
     std::vector<freight> items_;
+    std::vector<FreightObserver*> observers_;  // observer pattern support
 public:
     bool add(const freight& f);                                 // list manipulation
     bool remove(int id);
@@ -23,5 +27,10 @@ public:
     const std::vector<freight>& all() const;                    // accessor for read-only
 
     freight* findById(int id);
+    
+    // Observer pattern methods
+    void addObserver(FreightObserver* observer);
+    void removeObserver(FreightObserver* observer);
+    void notifyFreightRemoved(const freight& f);
 };
 
