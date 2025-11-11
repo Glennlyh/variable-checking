@@ -1,4 +1,5 @@
 #include "freightlist.h"
+#include "FreightObserver.h"
 #include "functions.h"
 #include <fstream>
 #include <sstream>
@@ -39,6 +40,10 @@ bool freightlist::remove(int id)
         return false;
     }
 
+    // Notify observers before removing
+    freight removedFreight = *it;
+    notifyFreightRemoved(removedFreight);
+    
     items_.erase(it);
     return true;
 }
@@ -163,4 +168,32 @@ void freightlist::displayAll(std::ostream& os) const
 const vector<freight>& freightlist::all() const
 {
     return items_; 
+}
+
+void freightlist::addObserver(FreightObserver* observer)
+{
+    if (observer && find(observers_.begin(), observers_.end(), observer) == observers_.end())
+    {
+        observers_.push_back(observer);
+    }
+}
+
+void freightlist::removeObserver(FreightObserver* observer)
+{
+    auto it = find(observers_.begin(), observers_.end(), observer);
+    if (it != observers_.end())
+    {
+        observers_.erase(it);
+    }
+}
+
+void freightlist::notifyFreightRemoved(const freight& f)
+{
+    for (auto observer : observers_)
+    {
+        if (observer)
+        {
+            observer->onFreightRemoved(f);
+        }
+    }
 }

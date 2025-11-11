@@ -9,10 +9,16 @@
 
 using namespace std;
 
+// Forward declaration
+class FreightMenuHandler;
+
 class SchedulerMenuHandler {
 public:
     SchedulerMenuHandler(freightlist& fList, CargoList& cList, Schduler& sched);
     void run();
+    
+    // Allow FreightMenuHandler to access current grouping
+    void setFreightMenuHandler(FreightMenuHandler* handler);
 
 private:
     void printMenu();
@@ -20,6 +26,8 @@ private:
     freightlist& freightList;
     CargoList& cargoList;
     Schduler& scheduler;
+    
+    FreightMenuHandler* freightMenuHandler_;
 
     // store both the old groups format (for saving/analysis) and new shipments format (for display)
      unordered_map<int,  vector<int>> lastGroupsArrival;

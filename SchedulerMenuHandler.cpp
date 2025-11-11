@@ -1,4 +1,5 @@
 #include "SchedulerMenuHandler.h"
+#include "FreightMenuHandler.h"
 #include "functions.h"
 #include "ScheduleService.h"
 #include "MatchingEngine.h"
@@ -32,7 +33,7 @@ static MatchAllPairs g_matchStrategy;
 static ScheduleService g_scheduleService{ g_matchStrategy };
 
 SchedulerMenuHandler::SchedulerMenuHandler(freightlist& fList, CargoList& cList, Schduler& sched)
-    : freightList(fList), cargoList(cList), scheduler(sched) 
+    : freightList(fList), cargoList(cList), scheduler(sched), freightMenuHandler_(nullptr)
 {
 }
 
@@ -48,6 +49,11 @@ void SchedulerMenuHandler::printMenu()
         << " 7) Display cargos not yet assigned to any freight\n"
         << " 0) Return to main menu\n"
         << "Choice: ";
+}
+
+void SchedulerMenuHandler::setFreightMenuHandler(FreightMenuHandler* handler)
+{
+    freightMenuHandler_ = handler;
 }
 
 void SchedulerMenuHandler::run() 
@@ -85,6 +91,12 @@ void SchedulerMenuHandler::run()
                 totalAssigned += s.getCargoQuantity();
             }
             cout << "Total cargo items assigned: " << totalAssigned << "\n";
+            
+            // Sync with FreightMenuHandler for rebalancing support
+            if (freightMenuHandler_)
+            {
+                freightMenuHandler_->setCurrentGrouping(lastGroupsArrival);
+            }
             break;
         }
 
@@ -111,6 +123,12 @@ void SchedulerMenuHandler::run()
                 totalAssigned += s.getCargoQuantity();
             }
             cout << "Total cargo items assigned: " << totalAssigned << "\n";
+            
+            // Sync with FreightMenuHandler for rebalancing support
+            if (freightMenuHandler_)
+            {
+                freightMenuHandler_->setCurrentGrouping(lastGroupsLeast);
+            }
             break;
         }
 
