@@ -1,5 +1,6 @@
 #include "SchedulerMenuHandler.h"
 #include "FreightMenuHandler.h"
+#include "RoutePlanner.h"
 #include "functions.h"
 #include "ScheduleService.h"
 #include "MatchingEngine.h"
@@ -47,6 +48,7 @@ void SchedulerMenuHandler::printMenu()
         << " 5) Display scheduling plan sorted by freight load capacity\n"
         << " 6) Display freights not at full capacity\n"
         << " 7) Display cargos not yet assigned to any freight\n"
+        << " 8) Route Optimization Analysis\n"
         << " 0) Return to main menu\n"
         << "Choice: ";
 }
@@ -287,6 +289,70 @@ void SchedulerMenuHandler::run()
                     }
                 }
             }
+            break;
+        }
+
+        case 8: {
+            // Route Optimization Analysis
+            cout << "\n=== Route Optimization Analysis ===\n";
+            
+            // Get available destinations from the route optimizer
+            RoutePlanner planner;
+            auto destinations = planner.getOptimizer().getAllDestinations();
+            
+            if (destinations.empty()) {
+                cout << "No destination data available.\n";
+                break;
+            }
+            
+            cout << "Available destinations:\n";
+            for (size_t i = 0; i < destinations.size(); i++) {
+                cout << "  " << (i + 1) << ") " << destinations[i] << "\n";
+            }
+            
+            cout << "\nSelect origin (enter number or code): ";
+            string originInput;
+            cin >> originInput;
+            clearInput();
+            
+            string origin;
+            // Check if input is a number
+            try {
+                int idx = stoi(originInput);
+                if (idx > 0 && idx <= (int)destinations.size()) {
+                    origin = destinations[idx - 1];
+                } else {
+                    origin = originInput;
+                }
+            } catch (...) {
+                origin = originInput;
+            }
+            
+            cout << "Select destination (enter number or code): ";
+            string destInput;
+            cin >> destInput;
+            clearInput();
+            
+            string destination;
+            try {
+                int idx = stoi(destInput);
+                if (idx > 0 && idx <= (int)destinations.size()) {
+                    destination = destinations[idx - 1];
+                } else {
+                    destination = destInput;
+                }
+            } catch (...) {
+                destination = destInput;
+            }
+            
+            if (origin == destination) {
+                cout << "Origin and destination cannot be the same.\n";
+                break;
+            }
+            
+            // Perform route optimization analysis
+            planner.compareRouteOptions(origin, destination, freightList);
+            
             break;
         }
 
