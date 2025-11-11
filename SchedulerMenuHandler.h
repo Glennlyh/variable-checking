@@ -4,10 +4,10 @@
 #include "CargoList.h"
 #include "Schduler.h"
 #include "Shipment.h"
+#include "MatchingEngine.h"
+#include "ScheduleService.h"
 #include <unordered_map>
 #include <vector>
-
-using namespace std;
 
 class SchedulerMenuHandler {
 public:
@@ -22,10 +22,14 @@ private:
     Schduler& scheduler;
 
     // store both the old groups format (for saving/analysis) and new shipments format (for display)
-     unordered_map<int,  vector<int>> lastGroupsArrival;
-     unordered_map<int,  vector<int>> lastGroupsLeast;
+    std::unordered_map<int, std::vector<int>> lastGroupsArrival;
+    std::unordered_map<int, std::vector<int>> lastGroupsLeast;
 
     // store shipments with cargo quantities for display
-     vector<Shipment> lastShipmentsArrival;
-     vector<Shipment> lastShipmentsLeast;
+    std::vector<Shipment> lastShipmentsArrival;
+    std::vector<Shipment> lastShipmentsLeast;
+
+    // instance variables for match strategy and schedule service (moved from global static)
+    MatchAllPairs matchStrategy;
+    ScheduleService scheduleService;
 };

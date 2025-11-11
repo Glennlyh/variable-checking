@@ -4,14 +4,13 @@
 #include <unordered_map>
 #include "freight.h"
 #include "Cargo.h"
-using namespace std;
 
 // abstract base class for grouping strategies
 class GroupingStrategy 
 {
 public:
     virtual ~GroupingStrategy() = default;
-    virtual unordered_map<int, vector<int>> group(const vector<freight>& freights, const vector<Cargo>& cargos) const = 0;
+    virtual std::unordered_map<int, std::vector<int>> group(const std::vector<freight>& freights, const std::vector<Cargo>& cargos) const = 0;
 };
 
 
@@ -20,7 +19,7 @@ public:
 class PerfectArrivalGrouping : public GroupingStrategy 
 {
 public:
-    unordered_map<int, vector<int>> group(const vector<freight>& freights, const vector<Cargo>& cargos) const override;
+    std::unordered_map<int, std::vector<int>> group(const std::vector<freight>& freights, const std::vector<Cargo>& cargos) const override;
 };
 
 
@@ -29,5 +28,5 @@ public:
 class LeastFreightsGrouping : public GroupingStrategy 
 {
 public:
-    unordered_map<int, vector<int>> group(const vector<freight>& freights, const vector<Cargo>& cargos) const override;
+    std::unordered_map<int, std::vector<int>> group(const std::vector<freight>& freights, const std::vector<Cargo>& cargos) const override;
 };

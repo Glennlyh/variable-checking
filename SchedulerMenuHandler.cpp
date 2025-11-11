@@ -14,7 +14,9 @@
 #include <unordered_set>
 #include <unordered_map>
 
-static string promptLine(const string& prompt) 
+using namespace std;
+
+static string promptLine(const string& prompt)
 {
     cout << prompt;
     string s;
@@ -28,11 +30,8 @@ static void clearInput()
     cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
-static MatchAllPairs g_matchStrategy;
-static ScheduleService g_scheduleService{ g_matchStrategy };
-
 SchedulerMenuHandler::SchedulerMenuHandler(freightlist& fList, CargoList& cList, Schduler& sched)
-    : freightList(fList), cargoList(cList), scheduler(sched) 
+    : freightList(fList), cargoList(cList), scheduler(sched), scheduleService(matchStrategy)
 {
 }
 

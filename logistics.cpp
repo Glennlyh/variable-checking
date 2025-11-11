@@ -1,7 +1,7 @@
 #include "logistics.h"
 
 logistics::logistics(int idx, std::string dest, int t)
-    : index(idx), Destination(dest), time(t) 
+    : index(idx), destination(dest), time(t) 
 {
 }
 
@@ -20,13 +20,13 @@ void logistics::setIndex(int idx)
 
 std::string logistics::getDestination() const 
 {
-    return Destination;
+    return destination;
 }
 
 
 void logistics::setDestination(std::string dest) 
 {
-    Destination = dest;
+    destination = dest;
 }
 
 

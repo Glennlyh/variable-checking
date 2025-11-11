@@ -1,0 +1,11 @@
+# Build artifacts
+*.o
+*.out
+*.exe
+a.out
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*~

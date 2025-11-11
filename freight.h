@@ -4,8 +4,6 @@
 #include <ostream>
 #include "logistics.h"
 
-using namespace std;
-
 
 class freight : public logistics 
 {
@@ -23,7 +21,7 @@ public:
     FreightType getType() const;
     void setType(FreightType t);
     int getCapacity() const;
-    string getTypeName() const;
+    std::string getTypeName() const;
     static FreightType parseTypeName(const std::string& s);
 
 private:

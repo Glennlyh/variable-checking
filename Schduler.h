@@ -8,19 +8,17 @@
 #include "Cargo.h"
 #include <iomanip>
 
-using namespace std;
-
 class Schduler
 {
-    vector<Shipment> plans;
+    std::vector<Shipment> plans;
 public:
     Schduler();
 
     Shipment mergePlans(const freight& f, const Cargo& c);
-    size_t matchAllPlans(const vector<freight>& freights, const vector<Cargo>& cargos);
+    size_t matchAllPlans(const std::vector<freight>& freights, const std::vector<Cargo>& cargos);
 
-    vector<Shipment> getPlans() const;                                                          // returns a copy (renamed from plans())
+    std::vector<Shipment> getPlans() const;                                                          // returns a copy (renamed from plans())
 
-    void setPlans(vector<Shipment> newPlans);
+    void setPlans(std::vector<Shipment> newPlans);
 };
 

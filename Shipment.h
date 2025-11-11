@@ -19,8 +19,8 @@ public:
     int getFreightIndex() const;
     int getCargoIndex() const;
 
-    string getFreightDes() const;
-    string getCargoDes() const;
+    std::string getFreightDes() const;
+    std::string getCargoDes() const;
 
     int getFreightTime() const;
     int getCargoTime() const;
@@ -33,6 +33,6 @@ public:
     int getCargoQuantity() const { return cargoQuantity; }  
     void setCargoQuantity(int qty) { cargoQuantity = qty; } 
 
-    string getFreightName() const { return "F" +  to_string(Freight.getIndex()); }
-    string getCargoName() const { return "C" +  to_string(cargo.getIndex()); }
+    std::string getFreightName() const { return "F" +  std::to_string(Freight.getIndex()); }
+    std::string getCargoName() const { return "C" +  std::to_string(cargo.getIndex()); }
 };

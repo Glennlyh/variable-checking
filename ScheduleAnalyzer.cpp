@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <unordered_set>
 
+using namespace std;
+
 vector<int> ScheduleAnalyzer::unmatchedFreightIds(const vector<Shipment>& plans, const vector<freight>& freights)
 {
     vector<int> ids;
