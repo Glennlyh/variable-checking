@@ -4,6 +4,8 @@
 #include "CargoList.h"
 #include "Schduler.h"
 #include "Shipment.h"
+#include "MatchingEngine.h"
+#include "ScheduleService.h"
 #include <unordered_map>
 #include <vector>
 
@@ -26,4 +28,8 @@ private:
     // store shipments with cargo quantities for display
     std::vector<Shipment> lastShipmentsArrival;
     std::vector<Shipment> lastShipmentsLeast;
+
+    // instance variables for match strategy and schedule service (moved from global static)
+    MatchAllPairs matchStrategy;
+    ScheduleService scheduleService;
 };
