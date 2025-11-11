@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <climits>
 
+using namespace std;
+
 static int toMinutes(int hhmm) {
     return (hhmm / 100) * 60 + (hhmm % 100);
 }

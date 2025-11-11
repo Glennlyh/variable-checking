@@ -14,7 +14,9 @@
 #include <unordered_set>
 #include <unordered_map>
 
-static string promptLine(const string& prompt) 
+using namespace std;
+
+static string promptLine(const string& prompt)
 {
     cout << prompt;
     string s;

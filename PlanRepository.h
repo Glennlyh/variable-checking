@@ -6,14 +6,12 @@
 #include "freight.h"
 #include "Cargo.h"
 
-using namespace std;
-
 struct PlanRepository {
-    static bool saveCSV(const vector<Shipment>& plans, const string& filepath);
+    static bool saveCSV(const std::vector<Shipment>& plans, const std::string& filepath);
 
     // save grouping based schedule
-    static bool saveGrouping(const std::unordered_map<int, vector<int>>& groups,
-        const vector<freight>& freights,
-        const vector<Cargo>& cargos,
-        const string& filename);
+    static bool saveGrouping(const std::unordered_map<int, std::vector<int>>& groups,
+        const std::vector<freight>& freights,
+        const std::vector<Cargo>& cargos,
+        const std::string& filename);
 };

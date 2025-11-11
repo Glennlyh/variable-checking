@@ -2,6 +2,8 @@
 #include <algorithm>
 #include <unordered_map>
 
+using namespace std;
+
 vector<Shipment> ScheduleBuilder::buildFromArrival(
     const unordered_map<int, vector<int>>& groups,
     const vector<freight>& freights,

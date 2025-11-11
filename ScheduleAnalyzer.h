@@ -6,14 +6,12 @@
 #include "freight.h"
 #include "Cargo.h"
 
-using namespace std;
-
 // handles analysis operations on schedules
 class ScheduleAnalyzer 
 {
 public:
-    static vector<int> unmatchedFreightIds(const vector<Shipment>& plans, const vector<freight>& freights);
-    static vector<int> unmatchedCargoIds(const  vector<Shipment>& plans, const vector<Cargo>& cargos);
-    static vector<int> freightsWithSpaceLeft(const  unordered_map<int, vector<int>>& groups, const  vector<freight>& freights, const  vector<Cargo>& cargos);
-    static vector<int> unassignedCargoIdsFromGroups(const  unordered_map<int,  vector<int>>& groups, const  vector<Cargo>& cargos);
+    static std::vector<int> unmatchedFreightIds(const std::vector<Shipment>& plans, const std::vector<freight>& freights);
+    static std::vector<int> unmatchedCargoIds(const std::vector<Shipment>& plans, const std::vector<Cargo>& cargos);
+    static std::vector<int> freightsWithSpaceLeft(const std::unordered_map<int, std::vector<int>>& groups, const std::vector<freight>& freights, const std::vector<Cargo>& cargos);
+    static std::vector<int> unassignedCargoIdsFromGroups(const std::unordered_map<int, std::vector<int>>& groups, const std::vector<Cargo>& cargos);
 };

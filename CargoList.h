@@ -5,14 +5,12 @@
 #include <string>
 #include <ostream>
 
-using namespace std;
-
 class CargoList
 {
 private:
-    vector<Cargo> cargos;
+    std::vector<Cargo> cargos;
 public:
-    const vector<Cargo>& all() const;
+    const std::vector<Cargo>& all() const;
     size_t size() const;
 
     bool add(const Cargo& cargo);

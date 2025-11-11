@@ -4,6 +4,8 @@
 #include <fstream>
 #include <algorithm>
 
+using namespace std;
+
 bool PlanRepository::saveCSV(const vector<Shipment>& plans, const string& filepath) 
 {
     ofstream ofs(filepath.c_str());

@@ -7,6 +7,8 @@
 #include <unordered_map>
 #include <unordered_set>
 
+using namespace std;
+
 static bool cmpByCargoArrival(const Shipment& a, const Shipment& b)
 {
     return a.getCargoTime() < b.getCargoTime();

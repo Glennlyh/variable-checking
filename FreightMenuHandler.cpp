@@ -5,6 +5,8 @@
 #include <limits>
 #include <string>
 
+using namespace std;
+
 static  string promptLine(const  string& prompt) 
 {
     cout << prompt;

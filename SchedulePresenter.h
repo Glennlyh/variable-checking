@@ -7,34 +7,32 @@
 #include <ostream>
 #include <unordered_map>
 
-using namespace std;
-
 class SchedulePresenter {
 public:
-    static void tableByCargoArrival(const  vector<Shipment>& plans,  ostream& os);
+    static void tableByCargoArrival(const std::vector<Shipment>& plans, std::ostream& os);
 
-    static void groupingByArrival(const  vector<Shipment>& plans,
-        const vector<freight>& freights,
-        const vector<Cargo>& cargos,
-         ostream& os,
-         unordered_map<int,  vector<int>>& outGroups);
+    static void groupingByArrival(const std::vector<Shipment>& plans,
+        const std::vector<freight>& freights,
+        const std::vector<Cargo>& cargos,
+        std::ostream& os,
+        std::unordered_map<int, std::vector<int>>& outGroups);
 
-    static void displayScheduleByCargoArrivalTime(const  vector<Shipment>& plans,  ostream& os);
+    static void displayScheduleByCargoArrivalTime(const std::vector<Shipment>& plans, std::ostream& os);
 
     // overloaded versions that accept shipments for cargo splitting
-    static void displayGroupingByArrival( ostream& os,
-        const vector<Shipment>& plans,
-        const vector<freight>& freights,
-        const  vector<Cargo>& cargos);
+    static void displayGroupingByArrival(std::ostream& os,
+        const std::vector<Shipment>& plans,
+        const std::vector<freight>& freights,
+        const std::vector<Cargo>& cargos);
 
-    static void displayGroupingByLeastFreights( ostream& os,
-        const vector<Shipment>& plans,
-        const vector<freight>& freights,
-        const vector<Cargo>& cargos);
+    static void displayGroupingByLeastFreights(std::ostream& os,
+        const std::vector<Shipment>& plans,
+        const std::vector<freight>& freights,
+        const std::vector<Cargo>& cargos);
 
  
-    static void displayGroupingByArrival( ostream& os,
-        const unordered_map<int, vector<int>>& groups,
-        const vector<freight>& freights,
-        const vector<Cargo>& cargos);
+    static void displayGroupingByArrival(std::ostream& os,
+        const std::unordered_map<int, std::vector<int>>& groups,
+        const std::vector<freight>& freights,
+        const std::vector<Cargo>& cargos);
 };
